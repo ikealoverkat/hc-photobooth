@@ -30,9 +30,9 @@
 
 @theme {
 	--font-phantom: 'Phantom Sans', sans-serif;
-    --color-dark-red: #57040e;
-    --color-red: #ec3750;
-    --color-red-transparent: #ec375088;    
+	--color-dark-red: #57040e;
+	--color-red: #ec3750;
+	--color-red-transparent: #ec375088;
 }
 
 .dots-bg {
@@ -71,37 +71,56 @@
 }
 
 .button-shadow {
-    filter: drop-shadow(0 8px 2px rgba(87, 5, 16, 0.5));
+	filter: drop-shadow(0 8px 2px rgba(87, 5, 16, 0.5));
 }
 
 .bright-red-shadow {
-    filter: drop-shadow(0 4px 2px var(--color-red-transparent));
+	filter: drop-shadow(0 4px 2px var(--color-red-transparent));
 }
 
 .bright-red-shadow:hover {
-    filter: drop-shadow(0 8px 4px var(--color-red));
+	filter: drop-shadow(0 8px 4px var(--color-red));
 }
 
 .red-button {
-    font-family: "Phantom Sans", sans-serif;
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 1rem;
+	font-family: 'Phantom Sans', sans-serif;
+	font-size: 1.5rem;
+	font-style: italic;
+	padding: 1rem;
 
-    outline: 2px solid var(--color-red-transparent); 
+	outline: 2px solid var(--color-red-transparent);
 
-    backdrop-filter: blur(5px);
-    background-color: rgba(255, 0, 0, 0.15); 
+	backdrop-filter: blur(5px);
+	background-color: rgba(255, 0, 0, 0.15);
 
-    color: var(--color-dark-red); 
+	color: var(--color-dark-red);
 
-    border-radius: 2rem; 
+	border-radius: 2rem;
 
-    margin-bottom: 2rem;
+	margin-bottom: 2rem;
 
-    transition: 200ms;
+	transition: 200ms;
 }
 
 .red-button:hover {
-    transform: scale(1.05);
+	transform: scale(1.05);
+}
+
+.printer {
+    overflow: hidden;
+    height: 750px;
+}
+
+.printer canvas {
+    animation: print 2s ease-out forwards;
+}
+
+@keyframes print {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }

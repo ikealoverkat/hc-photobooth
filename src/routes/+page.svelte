@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
 	let video: HTMLVideoElement;
 	let canvas: HTMLCanvasElement;
@@ -27,11 +27,12 @@
 
 	let selector: HTMLDivElement;
 	let frameSelector: HTMLDivElement;
-    let printSection: HTMLDivElement;
+	let printSection: HTMLDivElement;
 
 	let nextButton: HTMLButtonElement;
 
-	let printCanvas: HTMLCanvasElement;    
+	let printCanvas: HTMLCanvasElement;
+	let printed = $state(false);
 
 	let frames: Frame[] = $state([
 		{ src: '/frame_hc.png', name: 'hack club themed frame!', selected: false },
@@ -42,7 +43,7 @@
 	]);
 
 	onMount(async () => {
-        printCanvas = document.createElement("canvas");
+		printCanvas = document.createElement('canvas');
 
 		stream = await navigator.mediaDevices.getUserMedia({ video: true });
 		video.srcObject = stream;
@@ -128,7 +129,7 @@
 	async function makePhotoStrip() {
 		printCanvas.classList.remove('hidden');
 
-        const selectedPhotos = photos.filter((photo) => photo.selected);
+		const selectedPhotos = photos.filter((photo) => photo.selected);
 		const selectedFrame = frames.find((frame) => frame.selected);
 
 		if (!selectedFrame) return;
@@ -255,6 +256,8 @@
 			class="red-button bright-red-shadow -mt-14 hidden w-fit self-center"
 			bind:this={nextButton}
 			onclick={() => {
+				printSection.classList.remove('hidden');
+				printSection.classList.add('flex');
 				printSection.scrollIntoView({
 					behavior: 'smooth',
 					block: 'start'
@@ -263,10 +266,21 @@
 		>
 	</div>
 	<!-- "print" photostrip -->
-	<div bind:this={printSection} class="flex flex-col items-center justify-center gap-4">
-		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>    
-		<button class="red-button bright-red-shadow" onclick={makePhotoStrip}>print!</button>
-        <hr class="w-[50%] self-center border-2 border-dark-red/50 -mb-4" />
-		<canvas bind:this={printCanvas} class="hidden outline outline-dark-red"></canvas>
+	<div bind:this={printSection} class="hidden h-screen flex-col items-center justify-center gap-4">
+		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>
+		<button
+			class="red-button bright-red-shadow"
+			onclick={async () => {
+				printed = true;
+                await tick();
+				makePhotoStrip();
+			}}>print!</button
+		>
+		<hr class="-mb-4 w-[50%] self-center border-2 border-dark-red/50" />
+		{#if printed}
+			<div class="printer">
+				<canvas bind:this={printCanvas} class="hidden outline outline-dark-red"></canvas>
+			</div>
+		{/if}
 	</div>
 </main>
