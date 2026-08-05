@@ -186,7 +186,7 @@
 	<!-- photo taking part -->
 	<div class="scroll-appear flex h-screen flex-col items-center justify-center">
 		<div
-			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
+			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101 rounded-xl"
 		>
 			<div class="mb-8 text-center">
 				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
