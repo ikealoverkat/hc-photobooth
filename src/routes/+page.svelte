@@ -79,7 +79,7 @@
 
 		try {
 			for (let i = 0; i < 6; i++) {
-				countdown = 0;
+				countdown = 3;
 
 				while (countdown > 0) {
 					await new Promise((r) => setTimeout(r, 1000));
@@ -151,6 +151,34 @@
 		context?.drawImage(images[3], 0, 530, 230, 140);
 
 		context?.drawImage(frame, 0, 0, 200, 750);
+	}
+
+	function downloadPhotoStrip() {
+		if (!printCanvas) return;
+
+		const image = printCanvas.toDataURL('image/png');
+		const link = document.createElement('a');
+		link.href = image;
+		link.download = 'photostrip.png';
+		link.click();
+	}
+
+	async function copyPhotoStrip() {
+		if (!printCanvas) return;
+
+		const blob = await new Promise<Blob | null>((resolve) =>
+			printCanvas.toBlob(resolve, 'image/png')
+		);
+
+		if (!blob) return;
+
+		await navigator.clipboard.write([
+			new ClipboardItem({
+				'image/png': blob
+			})
+		]);
+
+		console.log('copied to clipboard!');
 	}
 </script>
 
@@ -270,17 +298,30 @@
 		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>
 		<button
 			class="red-button bright-red-shadow"
-			onclick={async () => {
+			onclick={async (e) => {
 				printed = true;
-                await tick();
+				await tick();
 				makePhotoStrip();
+				(e.currentTarget as HTMLButtonElement).classList.add('hidden');
 			}}>print!</button
 		>
-		<hr class="-mb-4 w-[50%] self-center border-2 border-dark-red/50" />
-		{#if printed}
-			<div class="printer">
-				<canvas bind:this={printCanvas} class="hidden outline outline-dark-red"></canvas>
-			</div>
-		{/if}
+		<div class="flex flex-row items-center justify-center gap-32">
+			{#if printed}
+				<div class="printer relative">
+					<hr class="absolute top-0 left-0 z-20 w-full -mb-4 border-2 border-dark-red/50" />
+					<canvas bind:this={printCanvas} class="hidden"></canvas>
+				</div>
+
+				<div class="print-fadein flex flex-col gap-2 opacity-0">
+					<button class="red-button bright-red-shadow" onclick={downloadPhotoStrip}
+						>download as png</button
+					>
+					<button class="red-button bright-red-shadow" onclick={copyPhotoStrip}
+						>copy to clipboard</button
+					>
+                    <button class="red-button bright-red-shadow font-bold" onclick={() => { location.reload(); }}>again!</button>
+				</div>
+			{/if}
+		</div>
 	</div>
 </main>
