@@ -27,8 +27,13 @@
 
 	let selector: HTMLDivElement;
 
-	let frames: Frame[] = [];
-	// import this once i actually have frames
+	let frames: Frame[] = $state([
+		{ src: '/frame_hc.png', name: 'hack club themed frame!', selected: false },
+		{ src: '/frame_hctg.png', name: 'hack club the frame', selected: false },
+		{ src: '/frame_intern.png', name: 'summer internship frame!', selected: false },
+		{ src: '/frame_ovg.png', name: 'overglade frame. senator im singaporean', selected: false },
+		{ src: '/frame_ysws.png', name: 'ysws frame! dont we all love free stuff?', selected: false }
+	]);
 
 	onMount(async () => {
 		stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -90,20 +95,20 @@
 		}
 	}
 
-	function toggleFrameSelect(frame: Frame) {
-		const selectedCount = photos.filter((f) => f.selected).length;
-		if (!frame.selected && selectedCount >= 1) {
-			return;
+	function toggleFrameSelect(selectedFrame: Frame) {
+		for (const frame of frames) {
+			frame.selected = frame === selectedFrame;
 		}
-		frame.selected = !frame.selected;
+
+		frames = [...frames];
 	}
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
 	<!-- photo taking part -->
-	<div class="flex h-screen flex-col items-center justify-center duration-200 hover:scale-101">
+	<div class="flex h-screen flex-col items-center justify-center">
 		<div
-			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px]"
+			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
 		>
 			<div class="mb-8 text-center">
 				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
@@ -121,7 +126,7 @@
 					autoplay
 					playsinline
 					muted
-					class="scale-x-[-1] outline-2 outline-dark-red"
+					class="max-w-200 scale-x-[-1] outline-2 outline-dark-red"
 				></video>
 			</div>
 
@@ -164,20 +169,24 @@
 	<!-- choose frame -->
 	<div class="flex h-screen flex-col gap-4">
 		<h1 class="font-phantom text-4xl font-bold text-dark-red">choose a photo frame!</h1>
-		<div class="-px-16 flex flex-row overflow-x-scroll">
-			{#each frames as frame}
+		<div class="flex flex-row overflow-x-scroll p-8">
+			{#each frames as frame, i}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-				<div>
+				<div class={i === 0 ? 'group' : 'group -ml-12'}>
 					<img
 						src={frame.src}
 						alt={frame.name}
 						class={frame.selected
-							? 'outline-4 outline-red duration-200 hover:z-100 hover:scale-102 active:scale-101'
-							: 'outline duration-200 hover:scale-103'}
+							? 'z-100 w-50 outline-4 outline-red duration-500 hover:mx-16 hover:scale-103'
+							: 'w-50 outline duration-500 hover:mx-16 hover:scale-103'}
 						onclick={() => toggleFrameSelect(frame)}
 					/>
-                    <h2 class="font-phantom text-xl font-italic text-dark-red">{frame.name}</h2>
+					<h2
+						class="font-italic m-4 max-w-40 justify-self-center text-center font-phantom text-xl text-wrap text-dark-red opacity-0 duration-500 group-hover:opacity-100"
+					>
+						{frame.name}
+					</h2>
 				</div>
 			{/each}
 		</div>
