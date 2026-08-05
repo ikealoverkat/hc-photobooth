@@ -19,7 +19,7 @@
 
 	let countdown: number = $state(0);
 
-    let selector: HTMLDivElement;
+	let selector: HTMLDivElement;
 
 	onMount(async () => {
 		stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -37,6 +37,16 @@
 
 		photos = [...photos, { src: canvas.toDataURL('image/png'), selected: false }];
 	}
+
+    function togglePhotoSelect(photo: Photo) {
+        const selectedCount = photos.filter(p => p.selected).length;
+        if (!photo.selected && selectedCount >= 4) {
+            return;
+        }
+
+        photo.selected = !photo.selected;
+        photos = [...photos];
+    }
 
 	async function photobooth() {
 		isTakingPhotos = true;
@@ -60,6 +70,9 @@
 			countdown = 0;
 			isTakingPhotos = false;
 			buttonSource = '/record.png';
+            
+            selector.classList.remove('hidden');
+            selector.classList.add('flex');
 
 			selector?.scrollIntoView({
 				behavior: 'smooth',
@@ -70,25 +83,35 @@
 </script>
 
 <main class="flex flex-col items-center justify-center gap-4 p-4">
-	<h1>i said hey whats up hello</h1>
+	<!-- photo taking part -->
+	<div class="h-screen flex flex-col items-center justify-center gap-4 -mt-4">
+		<div class="text-center">
+			<h1 class="font-phantom text-4xl font-bold">hack club photobooth!</h1>
+			<p class="font-phantom text-2xl">
+				it's just a normal photobooth, but all the frames are hack club themed :p
+			</p>
+		</div>
 
-	<div class="flex flex-col items-center justify-center gap-2 outline-2">
-		{#if countdown !== 0}
-			<div class="text-4xl">{countdown}</div>
-		{/if}
-		<video bind:this={video} autoplay playsinline muted class="scale-x-[-1]"></video>
+		<div class="flex flex-col items-center justify-center gap-2">
+			{#if countdown !== 0}
+				<div class="text-4xl">{countdown}</div>
+			{/if}
+			<video bind:this={video} autoplay playsinline muted class="scale-x-[-1] outline-2"></video>
+		</div>
+
+		<button onclick={photobooth} disabled={isTakingPhotos}
+			><img src={buttonSource} alt="click to take photos" width="75px" height="75px" /></button
+		>
 	</div>
-
-	<button onclick={photobooth} disabled={isTakingPhotos}
-		><img src={buttonSource} alt="click to take photos" width="75px" height="75px" /></button
-	>
-
 	<canvas bind:this={canvas} class="hidden"> </canvas>
 
-	<div class="flex justify-center">
-		<div bind:this={selector} class="flex w-4/5 scale-x-[-1] flex-wrap justify-center gap-2">
+	<div bind:this={selector} class="hidden flex-col gap-4 h-screen items-center justify-center">
+        <h1 class="font-phantom text-4xl font-bold m-4">choose four pictures to keep</h1>
+		<div class="flex max-h-fit w-4/5 scale-x-[-1] flex-wrap justify-center self-center gap-4 duration-200">
 			{#each photos as photo}
-				<img src={photo.src} alt="" width="400" class="outline" />
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+				<img src={photo.src} alt="" width="400" class={photo.selected ? 'outline-4 outline-blue-500 hover:scale-103 active:scale-102 duration-200' : 'outline duration-200 hover:scale-103'} onclick={() => togglePhotoSelect(photo)} />
 			{/each}
 		</div>
 	</div>
