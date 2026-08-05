@@ -95,7 +95,7 @@
 		if (!frame.selected && selectedCount >= 1) {
 			return;
 		}
-        frame.selected = !frame.selected;
+		frame.selected = !frame.selected;
 	}
 </script>
 
@@ -162,20 +162,23 @@
 	</div>
 
 	<!-- choose frame -->
-	<div class="flex flex-col h-screen gap-4">
-		<h1 class="text-4xl font-phantom text-dark-red font-bold">choose a photo frame!</h1>
-		<div class="flex flex-row overflow-x-scroll -px-16">
+	<div class="flex h-screen flex-col gap-4">
+		<h1 class="font-phantom text-4xl font-bold text-dark-red">choose a photo frame!</h1>
+		<div class="-px-16 flex flex-row overflow-x-scroll">
 			{#each frames as frame}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-				<img
-					src={frame.src}
-					alt={frame.name}
-					class={frame.selected
-						? 'outline-4 outline-red duration-200 hover:scale-102 hover:z-100 active:scale-101'
-						: 'outline duration-200 hover:scale-103'}
-					onclick={() => toggleFrameSelect(frame)}
-				/>
+				<div>
+					<img
+						src={frame.src}
+						alt={frame.name}
+						class={frame.selected
+							? 'outline-4 outline-red duration-200 hover:z-100 hover:scale-102 active:scale-101'
+							: 'outline duration-200 hover:scale-103'}
+						onclick={() => toggleFrameSelect(frame)}
+					/>
+                    <h2 class="font-phantom text-xl font-italic text-dark-red">{frame.name}</h2>
+				</div>
 			{/each}
 		</div>
 	</div>
