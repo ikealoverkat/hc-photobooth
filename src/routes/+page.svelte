@@ -27,8 +27,11 @@
 
 	let selector: HTMLDivElement;
 	let frameSelector: HTMLDivElement;
+    let printSection: HTMLDivElement;
 
 	let nextButton: HTMLButtonElement;
+
+	let printCanvas: HTMLCanvasElement;    
 
 	let frames: Frame[] = $state([
 		{ src: '/frame_hc.png', name: 'hack club themed frame!', selected: false },
@@ -39,6 +42,8 @@
 	]);
 
 	onMount(async () => {
+        printCanvas = document.createElement("canvas");
+
 		stream = await navigator.mediaDevices.getUserMedia({ video: true });
 		video.srcObject = stream;
 		await video.play();
@@ -111,8 +116,6 @@
 		}
 	}
 
-	let printCanvas: HTMLCanvasElement = $state(document.createElement('canvas'));
-
 	async function loadImage(src: string): Promise<HTMLImageElement> {
 		const img = new Image();
 		img.src = src;
@@ -123,7 +126,9 @@
 	}
 
 	async function makePhotoStrip() {
-		const selectedPhotos = photos.filter((photo) => photo.selected);
+		printCanvas.classList.remove('hidden');
+
+        const selectedPhotos = photos.filter((photo) => photo.selected);
 		const selectedFrame = frames.find((frame) => frame.selected);
 
 		if (!selectedFrame) return;
@@ -136,13 +141,13 @@
 		console.log(selectedFrame);
 
 		const context = printCanvas.getContext('2d');
-		printCanvas.width = 400;
-		printCanvas.height = 1500;
+		printCanvas.width = 200;
+		printCanvas.height = 750;
 
-		context?.drawImage(images[0], 0, 0, 200, 200);
-		context?.drawImage(images[1], 0, 187.5, 200, 200);
-		context?.drawImage(images[2], 0, 375, 200, 200);
-		context?.drawImage(images[3], 0, 562.5, 200, 200);
+		context?.drawImage(images[0], 0, 50, 230, 140);
+		context?.drawImage(images[1], 0, 210, 230, 140);
+		context?.drawImage(images[2], 0, 370, 230, 140);
+		context?.drawImage(images[3], 0, 530, 230, 140);
 
 		context?.drawImage(frame, 0, 0, 200, 750);
 	}
@@ -250,13 +255,18 @@
 			class="red-button bright-red-shadow -mt-14 hidden w-fit self-center"
 			bind:this={nextButton}
 			onclick={() => {
-				printCanvas.classList.remove('hidden');
+				printSection.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				});
 			}}>next!</button
 		>
 	</div>
 	<!-- "print" photostrip -->
-	<div class="flex flex-col items-center justify-center gap-4">
+	<div bind:this={printSection} class="flex flex-col items-center justify-center gap-4">
+		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>    
 		<button class="red-button bright-red-shadow" onclick={makePhotoStrip}>print!</button>
+        <hr class="w-[50%] self-center border-2 border-dark-red/50 -mb-4" />
 		<canvas bind:this={printCanvas} class="hidden outline outline-dark-red"></canvas>
 	</div>
 </main>
