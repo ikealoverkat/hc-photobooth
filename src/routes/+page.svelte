@@ -26,6 +26,9 @@
 	let countdown: number = $state(0);
 
 	let selector: HTMLDivElement;
+	let frameSelector: HTMLDivElement;
+
+	let nextButton: HTMLButtonElement;
 
 	let frames: Frame[] = $state([
 		{ src: '/frame_hc.png', name: 'hack club themed frame!', selected: false },
@@ -101,6 +104,47 @@
 		}
 
 		frames = [...frames];
+
+		if (nextButton.classList.contains('hidden')) {
+			nextButton.classList.remove('hidden');
+			nextButton.classList.add('flex');
+		}
+	}
+
+	let printCanvas: HTMLCanvasElement = $state(document.createElement('canvas'));
+
+	async function loadImage(src: string): Promise<HTMLImageElement> {
+		const img = new Image();
+		img.src = src;
+
+		await img.decode();
+
+		return img;
+	}
+
+	async function makePhotoStrip() {
+		const selectedPhotos = photos.filter((photo) => photo.selected);
+		const selectedFrame = frames.find((frame) => frame.selected);
+
+		if (!selectedFrame) return;
+
+		const frame = await loadImage(selectedFrame.src);
+
+		const images = await Promise.all(selectedPhotos.map((photo) => loadImage(photo.src)));
+
+		console.log(selectedPhotos);
+		console.log(selectedFrame);
+
+		const context = printCanvas.getContext('2d');
+		printCanvas.width = 400;
+		printCanvas.height = 1500;
+
+		context?.drawImage(images[0], 0, 0, 200, 200);
+		context?.drawImage(images[1], 0, 187.5, 200, 200);
+		context?.drawImage(images[2], 0, 375, 200, 200);
+		context?.drawImage(images[3], 0, 562.5, 200, 200);
+
+		context?.drawImage(frame, 0, 0, 200, 750);
 	}
 </script>
 
@@ -163,11 +207,21 @@
 				/>
 			{/each}
 		</div>
-		<button class="red-button bright-red-shadow">next!</button>
+		<button
+			class="red-button bright-red-shadow mt-2"
+			onclick={() => {
+				frameSelector.classList.remove('hidden');
+				frameSelector.classList.add('flex');
+				frameSelector.scrollIntoView({
+					behavior: 'smooth',
+					block: 'start'
+				});
+			}}>next!</button
+		>
 	</div>
 
 	<!-- choose frame -->
-	<div class="flex h-screen flex-col gap-4">
+	<div bind:this={frameSelector} class="hidden h-screen flex-col items-center gap-4">
 		<h1 class="font-phantom text-4xl font-bold text-dark-red">choose a photo frame!</h1>
 		<div class="flex flex-row overflow-x-scroll p-8">
 			{#each frames as frame, i}
@@ -178,9 +232,11 @@
 						src={frame.src}
 						alt={frame.name}
 						class={frame.selected
-							? 'z-100 w-50 outline-4 outline-red duration-500 hover:mx-16 hover:scale-103'
-							: 'w-50 outline duration-500 hover:mx-16 hover:scale-103'}
-						onclick={() => toggleFrameSelect(frame)}
+							? 'relative z-50 w-50 outline-4 outline-red transition-all duration-500 hover:mx-16 hover:scale-103'
+							: 'relative w-50 outline transition-all duration-500 hover:mx-16 hover:scale-103'}
+						onclick={() => {
+							toggleFrameSelect(frame);
+						}}
 					/>
 					<h2
 						class="font-italic m-4 max-w-40 justify-self-center text-center font-phantom text-xl text-wrap text-dark-red opacity-0 duration-500 group-hover:opacity-100"
@@ -190,7 +246,17 @@
 				</div>
 			{/each}
 		</div>
+		<button
+			class="red-button bright-red-shadow -mt-14 hidden w-fit self-center"
+			bind:this={nextButton}
+			onclick={() => {
+				printCanvas.classList.remove('hidden');
+			}}>next!</button
+		>
 	</div>
 	<!-- "print" photostrip -->
-	<div></div>
+	<div class="flex flex-col items-center justify-center gap-4">
+		<button class="red-button bright-red-shadow" onclick={makePhotoStrip}>print!</button>
+		<canvas bind:this={printCanvas} class="hidden outline outline-dark-red"></canvas>
+	</div>
 </main>
