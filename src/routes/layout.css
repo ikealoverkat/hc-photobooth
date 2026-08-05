@@ -139,3 +139,10 @@
         opacity: 1;
     }
 }
+
+.scroll-appear {
+    animation-name: fadein;
+    animation-timeline: view();
+    animation-range: entry 20% cover 50%;
+    animation-fill-mode: both;
+}

@@ -184,7 +184,7 @@
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
 	<!-- photo taking part -->
-	<div class="flex h-screen flex-col items-center justify-center">
+	<div class="scroll-appear flex h-screen flex-col items-center justify-center">
 		<div
 			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
 		>
@@ -192,12 +192,13 @@
 				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
 				<p class="font-phantom text-2xl text-dark-red/75">
 					it's just a normal photobooth, but all the frames are hack club themed :p
+                    <br>take pictures w/your friends @ HC events! ^_^ or by yourself. that works too.
 				</p>
 			</div>
 
 			<div class="flex flex-col items-center justify-center gap-2">
 				{#if countdown !== 0}
-					<div class="font-phantom text-4xl text-dark-red">{countdown}</div>
+					<div class="my-4 font-phantom text-6xl text-dark-red/75">{countdown}</div>
 				{/if}
 				<video
 					bind:this={video}
@@ -222,7 +223,10 @@
 	<canvas bind:this={canvas} class="hidden"> </canvas>
 
 	<!-- select photos -->
-	<div bind:this={selector} class="hidden h-screen flex-col items-center justify-center gap-4">
+	<div
+		bind:this={selector}
+		class="scroll-appear hidden h-screen flex-col items-center justify-center gap-4"
+	>
 		<h1 class="m-4 font-phantom text-4xl font-bold text-dark-red">choose four pictures to keep</h1>
 		<div
 			class="flex max-h-fit w-4/5 scale-x-[-1] flex-wrap justify-center gap-4 self-center duration-200"
@@ -255,7 +259,7 @@
 	</div>
 
 	<!-- choose frame -->
-	<div bind:this={frameSelector} class="hidden h-screen flex-col items-center gap-4">
+	<div bind:this={frameSelector} class="scroll-appear hidden h-screen flex-col items-center gap-4">
 		<h1 class="font-phantom text-4xl font-bold text-dark-red">choose a photo frame!</h1>
 		<div class="flex flex-row overflow-x-scroll p-8">
 			{#each frames as frame, i}
@@ -294,7 +298,10 @@
 		>
 	</div>
 	<!-- "print" photostrip -->
-	<div bind:this={printSection} class="hidden h-screen flex-col items-center justify-center gap-4">
+	<div
+		bind:this={printSection}
+		class="scroll-appear hidden h-screen flex-col items-center justify-center gap-4"
+	>
 		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>
 		<button
 			class="red-button bright-red-shadow"
@@ -308,7 +315,7 @@
 		<div class="flex flex-row items-center justify-center gap-32">
 			{#if printed}
 				<div class="printer relative">
-					<hr class="absolute top-0 left-0 z-20 w-full -mb-4 border-2 border-dark-red/50" />
+					<hr class="absolute top-0 left-0 z-20 -mb-4 w-full border-2 border-dark-red/50" />
 					<canvas bind:this={printCanvas} class="hidden"></canvas>
 				</div>
 
@@ -319,9 +326,36 @@
 					<button class="red-button bright-red-shadow" onclick={copyPhotoStrip}
 						>copy to clipboard</button
 					>
-                    <button class="red-button bright-red-shadow font-bold" onclick={() => { location.reload(); }}>again!</button>
+					<button
+						class="red-button bright-red-shadow font-bold"
+						onclick={() => {
+							location.reload();
+						}}>again!</button
+					>
 				</div>
 			{/if}
 		</div>
+	</div>
+	<div class="p-4 pb-16 text-center">
+		<h1 class="font-phantom text-2xl text-dark-red">
+			made with <b class="text-red">♡</b> by
+			<a
+				href="https://kat.wang"
+				target="_blank"
+				class="text-red italic underline hover:decoration-wavy">kat wang</a
+			>
+		</h1>
+		<h2 class="m-2 font-phantom text-xl text-dark-red/75">
+			a <a href="hackclub.com" target="blank" class="text-red/75 underline hover:decoration-wavy"
+				>hack club</a
+			>
+			project •
+			<a href="slack.hackclub.com" target="_blank" class="text-red/75 underline hover:decoration-wavy"
+				>join the slack</a
+			> •
+            <a href="https://hackclub.enterprise.slack.com/team/U08H34LLQQJ" target="_blank" class="text-red/75 underline hover:decoration-wavy">
+                dm me!
+            </a>
+		</h2>
 	</div>
 </main>
