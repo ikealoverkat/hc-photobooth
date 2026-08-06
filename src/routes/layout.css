@@ -35,6 +35,10 @@
 	--color-red-transparent: #ec375088;
 }
 
+h1, h2, h3, a, p {
+	font-family: var(--font-phantom);
+}
+
 .dots-bg {
 	background-color: #f7f7f7;
 	background-image:
