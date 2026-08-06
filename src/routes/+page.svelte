@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 
+	let mobileWarning: HTMLDivElement;
+
 	let video: HTMLVideoElement;
 	let canvas: HTMLCanvasElement;
 
@@ -26,7 +28,6 @@
 	let countdown: number = $state(0);
 	let countdownTime: number = $state(3);
 	let countdownOptions = [0, 1, 3, 5];
-
 
 	let flash = $state(false);
 
@@ -203,6 +204,36 @@
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
+	<div
+		bind:this={mobileWarning}
+		class="fixed inset-0 z-50 flex items-center justify-center bg-dark-red/50 p-6 backdrop-blur-md lg:hidden"
+	>
+		<div
+			class="flex w-full max-w-sm flex-col items-center gap-5 rounded-3xl bg-white p-8 text-center shadow-2xl outline outline-dark-red"
+		>
+
+			<h1 class="font-phantom text-2xl font-bold text-red">looks like you're on a phone!</h1>
+
+			<p class="font-phantom text-base leading-relaxed text-dark-red">
+				this photobooth was designed for laptops and desktops. it might still run, but everything will look weird & perhaps misplaced.
+			</p>
+
+			<div class="flex w-full flex-col gap-3 sm:flex-row">
+				<a href="https://google.com" class="countdown-button flex-1 text-center font-bold italic">
+					OK (close tab)
+				</a>
+
+				<button
+					class="countdown-button flex-1"
+					onclick={() => mobileWarning.classList.add('hidden')}
+				>
+					girl bye (continue anyway)
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- actual app -->
 	{#if flash}
 		<div class="animate-flash pointer-events-none fixed inset-0 z-20 bg-white"></div>
 	{/if}
