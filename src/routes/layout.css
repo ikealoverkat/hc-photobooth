@@ -107,44 +107,44 @@
 }
 
 .printer {
-    overflow: hidden;
-    height: 750px;
+	overflow: hidden;
+	height: 750px;
 }
 
 .printer canvas {
-    animation: print 2s ease-out forwards;
+	animation: print 2s ease-out forwards;
 }
 
 @keyframes print {
-    0% {
-        transform: translateY(-100%);
-    }
+	0% {
+		transform: translateY(-100%);
+	}
 
-    100% {
-        transform: translateY(0);
-    }
+	100% {
+		transform: translateY(0);
+	}
 }
 
 .print-fadein {
-    animation: fadein 1s ease-out forwards;
-    animation-delay: 2s;
+	animation: fadein 1s ease-out forwards;
+	animation-delay: 2s;
 }
 
 @keyframes fadein {
-    0% {
-        opacity: 0;
-    }
+	0% {
+		opacity: 0;
+	}
 
-    100% {
-        opacity: 1;
-    }
+	100% {
+		opacity: 1;
+	}
 }
 
 .scroll-appear {
-    animation-name: fadein;
-    animation-timeline: view();
-    animation-range: entry 20% cover 50%;
-    animation-fill-mode: both;
+	animation-name: fadein;
+	animation-timeline: view();
+	animation-range: entry 20% cover 50%;
+	animation-fill-mode: both;
 }
 
 .animate-flash {
@@ -158,10 +158,62 @@
 	}
 	15% {
 		opacity: 1;
-		filter: blur(8px);		
+		filter: blur(8px);
 	}
 	100% {
 		opacity: 0;
-		filter: blur(0);		
+		filter: blur(0);
 	}
+}
+
+
+.countdown-button {
+	font-family: var(--font-phantom);
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+
+	color: var(--color-dark-red);
+	background-color: #faf0f0;
+
+	outline: 1px solid currentColor;
+
+	padding: 0.5rem 1rem;
+
+	border-radius: 2rem;
+
+	filter: drop-shadow(0px 2px 0px var(--color-dark-red));
+
+	transition-duration: 100ms;
+}
+
+.countdown-button:hover {
+	background-color: #ffebeb;
+	padding: 0.35rem 1rem;
+	filter: drop-shadow(0px 4px 0px var(--color-dark-red));
+}
+
+
+.countdown-button-selected {
+	font-family: var(--font-phantom);
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+
+	background-color: #ee6477;
+	color: #faf0f0;
+
+	outline: 2px solid var(--color-dark-red);
+
+	padding: 0.5rem 1rem;
+
+	border-radius: 2rem;
+
+	filter: drop-shadow(0px 2px 0px var(--color-dark-red));
+
+	transition-duration: 100ms;
+}
+
+.countdown-button-selected:hover {
+	background-color: #e64f63;
+	padding: 0.35rem 1rem;
+	filter: drop-shadow(0px 4px 0px var(--color-dark-red));
 }

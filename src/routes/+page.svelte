@@ -24,7 +24,9 @@
 	let buttonSource: string = $state('/record.png');
 
 	let countdown: number = $state(0);
-	let countdownTime: number = 3;
+	let countdownTime: number = $state(3);
+	let countdownOptions = [0, 1, 3, 5];
+
 
 	let flash = $state(false);
 
@@ -209,12 +211,26 @@
 		<div
 			class="flex flex-col items-center justify-center gap-4 rounded-xl bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
 		>
-			<div class="mb-8 text-center">
+			<div class="text-center">
 				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
 				<p class="font-phantom text-2xl text-dark-red/75">
 					it's just a normal photobooth, but all the frames are hack club themed :p
 					<br />take pictures w/your friends @ HC events! ^_^ or by yourself. that works too.
 				</p>
+			</div>
+
+			<div class="m-4 flex flex-row items-center gap-4">
+				<h2 class="font-phantom text-lg font-bold text-dark-red/50">COUNTDOWN</h2>
+				{#each countdownOptions as time}
+					<button
+						class={`countdown-button ${
+							countdownTime === time ? 'countdown-button-selected' : 'countdown-button-hover'
+						}`}
+						onclick={() => (countdownTime = time)}
+					>
+						{time === 0 ? 'burst (0)' : `${time}s`}
+					</button>
+				{/each}
 			</div>
 
 			<div class="flex flex-col items-center justify-center gap-2">
