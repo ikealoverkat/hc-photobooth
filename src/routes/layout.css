@@ -146,3 +146,22 @@
     animation-range: entry 20% cover 50%;
     animation-fill-mode: both;
 }
+
+.animate-flash {
+	animation: flash 0.5s ease-in-out forwards;
+}
+
+@keyframes flash {
+	0% {
+		opacity: 0;
+		filter: blur(0);
+	}
+	15% {
+		opacity: 1;
+		filter: blur(8px);		
+	}
+	100% {
+		opacity: 0;
+		filter: blur(0);		
+	}
+}

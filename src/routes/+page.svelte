@@ -24,6 +24,9 @@
 	let buttonSource: string = $state('/record.png');
 
 	let countdown: number = $state(0);
+	let countdownTime: number = 3;
+
+	let flash = $state(false);
 
 	let selector: HTMLDivElement;
 	let frameSelector: HTMLDivElement;
@@ -45,7 +48,15 @@
 	onMount(async () => {
 		printCanvas = document.createElement('canvas');
 
-		stream = await navigator.mediaDevices.getUserMedia({ video: true });
+		try {
+			stream = await navigator.mediaDevices.getUserMedia({
+				video: true
+			});
+		} catch (e) {
+			console.error(e);
+			alert(e instanceof Error ? e.message : String(e));
+		}
+
 		video.srcObject = stream;
 		await video.play();
 	});
@@ -71,6 +82,12 @@
 		photos = [...photos];
 	}
 
+	async function cameraFlash() {
+		flash = true;
+		await new Promise((r) => setTimeout(r, 100));
+		flash = false;
+	}
+
 	async function photobooth() {
 		isTakingPhotos = true;
 		buttonSource = '/disabled.png';
@@ -79,13 +96,14 @@
 
 		try {
 			for (let i = 0; i < 6; i++) {
-				countdown = 3;
+				countdown = countdownTime;
 
 				while (countdown > 0) {
 					await new Promise((r) => setTimeout(r, 1000));
 					countdown--;
 				}
-
+				await cameraFlash();
+				await tick();
 				takePhoto();
 				if (i !== 3) await new Promise((r) => setTimeout(r, 500));
 			}
@@ -183,16 +201,19 @@
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
+	{#if flash}
+		<div class="animate-flash pointer-events-none fixed inset-0 z-20 bg-white"></div>
+	{/if}
 	<!-- photo taking part -->
 	<div class="scroll-appear flex h-screen flex-col items-center justify-center">
 		<div
-			class="flex flex-col items-center justify-center gap-4 bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101 rounded-xl"
+			class="flex flex-col items-center justify-center gap-4 rounded-xl bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
 		>
 			<div class="mb-8 text-center">
 				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
 				<p class="font-phantom text-2xl text-dark-red/75">
 					it's just a normal photobooth, but all the frames are hack club themed :p
-                    <br>take pictures w/your friends @ HC events! ^_^ or by yourself. that works too.
+					<br />take pictures w/your friends @ HC events! ^_^ or by yourself. that works too.
 				</p>
 			</div>
 
@@ -200,13 +221,16 @@
 				{#if countdown !== 0}
 					<div class="my-4 font-phantom text-6xl text-dark-red/75">{countdown}</div>
 				{/if}
-				<video
-					bind:this={video}
-					autoplay
-					playsinline
-					muted
-					class="max-w-200 scale-x-[-1] outline-2 outline-dark-red"
-				></video>
+				<div>
+					<video
+						bind:this={video}
+						autoplay
+						playsinline
+						muted
+						class="max-w-200 scale-x-[-1] outline-2 outline-dark-red"
+					>
+					</video>
+				</div>
 			</div>
 
 			<button onclick={photobooth} disabled={isTakingPhotos}
@@ -350,12 +374,19 @@
 				>hack club</a
 			>
 			project •
-			<a href="slack.hackclub.com" target="_blank" class="text-red/75 underline hover:decoration-wavy"
-				>join the slack</a
-			> •
-            <a href="https://hackclub.enterprise.slack.com/team/U08H34LLQQJ" target="_blank" class="text-red/75 underline hover:decoration-wavy">
-                dm me!
-            </a>
+			<a
+				href="slack.hackclub.com"
+				target="_blank"
+				class="text-red/75 underline hover:decoration-wavy">join the slack</a
+			>
+			•
+			<a
+				href="https://hackclub.enterprise.slack.com/team/U08H34LLQQJ"
+				target="_blank"
+				class="text-red/75 underline hover:decoration-wavy"
+			>
+				dm me!
+			</a>
 		</h2>
 	</div>
 </main>
