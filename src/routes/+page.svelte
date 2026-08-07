@@ -53,7 +53,25 @@
 	let copied = $state(false);
 	let galleried = $state(false);
 
+	let hoverItem: HTMLAudioElement;
+	let hoverButton: HTMLAudioElement;
+
+	let clickItem: HTMLAudioElement;
+	let clickButton: HTMLAudioElement;
+
+	let shutter: HTMLAudioElement;
+	let print: HTMLAudioElement;
+	let yay: HTMLAudioElement;
+
 	onMount(async () => {
+		hoverItem = new Audio('/sounds/hover.mp3');
+		hoverButton = new Audio('sounds/hover.wav');
+		clickItem = new Audio('/sounds/click2.mp3');
+		clickButton = new Audio('/sounds/click1.mp3');
+		shutter = new Audio('/sounds/shutter.mp3');
+		print = new Audio('/sounds/print.mp3');
+		yay = new Audio('/sounds/yay.mp3');
+
 		printCanvas = document.createElement('canvas');
 
 		try {
@@ -68,6 +86,50 @@
 		video.srcObject = stream;
 		await video.play();
 	});
+
+	// sou nds
+
+	function playHoverItem() {
+		if (!hoverItem) return;
+		hoverItem.currentTime = 0;
+		hoverItem.play();
+	}
+
+	function playHoverButton() {
+		if (!hoverButton) return;
+		hoverButton.currentTime = 0;
+		hoverButton.play();
+	}
+
+	function playClickItem() {
+		if (!clickItem) return;
+		clickItem.currentTime = 0;
+		clickItem.play();
+	}
+
+	function playClickButton() {
+		if (!clickButton) return;
+		clickButton.currentTime = 0;
+		clickButton.play();
+	}
+
+	function playShutter() {
+		if (!shutter) return;
+		shutter.currentTime = 0;
+		shutter.play();
+	}
+
+	function playPrint() {
+		if (!print) return;
+		print.currentTime = 0;
+		print.play();
+	}
+
+	function playYay() {
+		if (!yay) return;
+		yay.currentTime = 0;
+		yay.play();
+	}
 
 	function takePhoto() {
 		const context = canvas.getContext('2d');
@@ -112,6 +174,7 @@
 				}
 				await cameraFlash();
 				await tick();
+				playShutter();
 				takePhoto();
 				if (i !== 3) await new Promise((r) => setTimeout(r, 500));
 			}
@@ -249,13 +312,22 @@
 			</p>
 
 			<div class="flex w-full flex-col gap-3 sm:flex-row">
-				<a href="https://google.com" class="countdown-button flex-1 text-center font-bold italic">
+				<a
+					href="https://google.com"
+					class="countdown-button flex-1 text-center font-bold italic"
+					onmouseenter={playHoverButton}
+					onclick={playClickButton}
+				>
 					OK (close tab)
 				</a>
 
 				<button
 					class="countdown-button flex-1"
-					onclick={() => mobileWarning.classList.add('hidden')}
+					onclick={() => {
+						mobileWarning.classList.add('hidden');
+						playClickButton();
+					}}
+					onmouseenter={playHoverButton}
 				>
 					girl bye (continue anyway)
 				</button>
@@ -287,7 +359,11 @@
 						class={`countdown-button ${
 							countdownTime === time ? 'countdown-button-selected' : 'countdown-button-hover'
 						}`}
-						onclick={() => (countdownTime = time)}
+						onmouseenter={playHoverButton}
+						onclick={() => {
+							countdownTime = time;
+							playClickButton();
+						}}
 					>
 						{time === 0 ? 'burst (0)' : `${time}s`}
 					</button>
@@ -310,7 +386,12 @@
 				</div>
 			</div>
 
-			<button onclick={photobooth} disabled={isTakingPhotos}
+			<button
+				onclick={() => {
+					playClickButton();
+					photobooth();
+				}}
+				disabled={isTakingPhotos}
 				><img
 					src={buttonSource}
 					alt="click to take photos"
@@ -342,13 +423,19 @@
 					class={photo.selected
 						? 'outline-4 outline-red duration-200 hover:scale-102 active:scale-101'
 						: 'outline duration-200 hover:scale-103'}
-					onclick={() => togglePhotoSelect(photo)}
+					onmouseenter={playHoverItem}
+					onclick={() => {
+						playClickItem();
+						togglePhotoSelect(photo);
+					}}
 				/>
 			{/each}
 		</div>
 		<button
 			class="red-button bright-red-shadow mt-2"
+			onmouseenter={playHoverButton}
 			onclick={() => {
+				playClickButton();
 				frameSelector.classList.remove('hidden');
 				frameSelector.classList.add('flex');
 				frameSelector.scrollIntoView({
@@ -373,7 +460,9 @@
 						class={frame.selected
 							? 'relative z-50 w-50 outline-4 outline-red transition-all duration-500 hover:mx-16 hover:scale-103'
 							: 'relative w-50 outline transition-all duration-500 hover:mx-16 hover:scale-103'}
+						onmouseenter={playHoverItem}
 						onclick={() => {
+							playClickItem();
 							toggleFrameSelect(frame);
 						}}
 					/>
@@ -388,7 +477,9 @@
 		<button
 			class="red-button bright-red-shadow -mt-14 hidden w-fit self-center"
 			bind:this={nextButton}
+			onmouseenter={playHoverButton}
 			onclick={() => {
+				playClickButton();
 				printSection.classList.remove('hidden');
 				printSection.classList.add('flex');
 				printSection.scrollIntoView({
@@ -409,6 +500,7 @@
 			onclick={async (e) => {
 				printed = true;
 				await tick();
+				playPrint();
 				makePhotoStrip();
 				(e.currentTarget as HTMLButtonElement).classList.add('hidden');
 			}}>print!</button
@@ -435,18 +527,31 @@
 				</div>
 
 				<div class="print-fadein flex flex-col gap-2 opacity-0">
-					<button class="red-button bright-red-shadow" onclick={downloadPhotoStrip}
-						>download as png</button
+					<button
+						class="red-button bright-red-shadow"
+						onclick={() => {
+							playClickButton();
+							downloadPhotoStrip();
+						}}>download as png</button
 					>
-					<button class="red-button bright-red-shadow" onclick={copyPhotoStrip}
-						>copy to clipboard</button
+					<button
+						class="red-button bright-red-shadow"
+						onclick={() => {
+							playClickButton();
+							copyPhotoStrip();
+						}}>copy to clipboard</button
 					>
-					<button class="red-button bright-red-shadow" onclick={exportToGallery}
-						>add to your gallery</button
+					<button
+						class="red-button bright-red-shadow"
+						onclick={() => {
+							playClickButton();
+							exportToGallery();
+						}}>add to your gallery</button
 					>
 					<button
 						class="red-button bright-red-shadow font-bold"
 						onclick={() => {
+							playYay();
 							location.reload();
 						}}>again!</button
 					>
