@@ -3,8 +3,6 @@
 	import Navbar from '$lib/Navbar.svelte';
 	import { onMount, tick } from 'svelte';
 
-	let mobileWarning: HTMLDivElement;
-
 	let video: HTMLVideoElement;
 	let canvas: HTMLCanvasElement;
 
@@ -51,7 +49,7 @@
 		{ src: '/frame_intern.png', name: 'summer internship frame!', selected: false },
 		{ src: '/frame_ovg.png', name: 'overglade frame. senator im singaporean', selected: false },
 		{ src: '/frame_ysws.png', name: 'ysws frame! dont we all love free stuff?', selected: false },
-		{ src: '/frame_polaris.png', name: 'horizons polaris frame. two twos my word', selected: false },		
+		{ src: '/frame_polaris.png', name: 'horizons polaris frame. two twos my word', selected: false }
 	]);
 
 	let copied = $state(false);
@@ -352,62 +350,28 @@
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
-	<div
-		bind:this={mobileWarning}
-		class="fixed inset-0 z-50 flex items-center justify-center bg-dark-red/50 p-6 backdrop-blur-md lg:hidden"
-	>
-		<div
-			class="flex w-full max-w-sm flex-col items-center gap-5 rounded-3xl bg-white p-8 text-center shadow-2xl outline outline-dark-red"
-		>
-			<h1 class="font-phantom text-2xl font-bold text-red">looks like you're on a phone!</h1>
-
-			<p class="font-phantom text-base leading-relaxed text-dark-red">
-				this photobooth was designed for laptops and desktops. it might still run, but everything
-				will look weird & perhaps misplaced.
-			</p>
-
-			<div class="flex w-full flex-col gap-3 sm:flex-row">
-				<a
-					href="https://google.com"
-					class="countdown-button flex-1 text-center font-bold italic"
-					onmouseenter={playHoverButton}
-					onclick={playClickButton}
-				>
-					OK (close tab)
-				</a>
-
-				<button
-					class="countdown-button flex-1"
-					onclick={() => {
-						mobileWarning.classList.add('hidden');
-						playClickButton();
-					}}
-					onmouseenter={playHoverButton}
-				>
-					girl bye (continue anyway)
-				</button>
-			</div>
-		</div>
-	</div>
-
 	<!-- actual app -->
 	{#if flash}
 		<div class="animate-flash pointer-events-none fixed inset-0 z-20 bg-white"></div>
 	{/if}
 	<!-- photo taking part -->
-	<div class="scroll-appear flex h-screen flex-col items-center justify-center">
+	<div
+		class="scroll-appear flex min-h-screen flex-col items-center justify-center py-8 sm:h-screen sm:py-0"
+	>
 		<div
-			class="flex flex-col items-center justify-center gap-4 rounded-xl bg-red/10 p-24 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101"
+			class="flex w-full max-w-4xl flex-col items-center justify-center gap-4 rounded-xl bg-red/10 p-4 shadow-md shadow-red/35 outline-2 outline-red/35 backdrop-blur-[2.5px] duration-200 hover:scale-101 sm:w-auto sm:p-12 lg:p-24"
 		>
 			<div class="text-center">
-				<h1 class="font-phantom text-4xl font-bold text-dark-red">hack club photobooth!</h1>
-				<p class="font-phantom text-2xl text-dark-red/75">
+				<h1 class="font-phantom text-3xl font-bold text-dark-red sm:text-4xl">
+					hack club photobooth!
+				</h1>
+				<p class="font-phantom text-base text-dark-red/75 sm:text-2xl">
 					it's just a normal photobooth, but all the frames are hack club themed :p
 					<br />take pictures w/your friends @ HC events! ^_^ or by yourself. that works too.
 				</p>
 			</div>
 
-			<div class="m-4 flex flex-row items-center gap-4">
+			<div class="m-4 flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
 				<h2 class="font-phantom text-lg font-bold text-dark-red/50">COUNTDOWN</h2>
 				{#each countdownOptions as time}
 					<button
@@ -435,7 +399,7 @@
 						autoplay
 						playsinline
 						muted
-						class="block w-125 scale-x-[-1] outline-2 outline-dark-red"
+						class="block w-125 max-w-[calc(100vw-3rem)] scale-x-[-1] outline-2 outline-dark-red"
 					></video>
 
 					{#if currentFilter === 'cute'}
@@ -455,7 +419,7 @@
 				</div>
 			</div>
 
-			<div class="m-4 flex flex-row items-center gap-4">
+			<div class="m-4 flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
 				<h2 class="font-phantom text-lg font-bold text-dark-red/50">FILTERS</h2>
 				{#each filters as filter}
 					<button
@@ -495,11 +459,13 @@
 	<!-- select photos -->
 	<div
 		bind:this={selector}
-		class="scroll-appear hidden h-screen flex-col items-center justify-center gap-4"
+		class="scroll-appear hidden min-h-screen flex-col items-center justify-center gap-4 py-8 sm:h-screen sm:py-0"
 	>
-		<h1 class="m-4 font-phantom text-4xl font-bold text-dark-red">choose four pictures to keep</h1>
+		<h1 class="m-4 text-center font-phantom text-3xl font-bold text-dark-red sm:text-4xl">
+			choose four pictures to keep
+		</h1>
 		<div
-			class="flex max-h-fit w-4/5 scale-x-[-1] flex-wrap justify-center gap-4 self-center duration-200"
+			class="flex max-h-fit w-full scale-x-[-1] flex-wrap justify-center gap-4 self-center duration-200 sm:w-4/5"
 		>
 			{#each photos as photo}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -509,8 +475,8 @@
 					alt=""
 					width="400"
 					class={photo.selected
-						? 'outline-4 outline-red duration-200 hover:scale-102 active:scale-101'
-						: 'outline duration-200 hover:scale-103'}
+						? 'w-[calc(50vw-1.5rem)] max-w-[400px] outline-4 outline-red duration-200 hover:scale-102 active:scale-101 sm:w-[400px]'
+						: 'w-[calc(50vw-1.5rem)] max-w-[400px] outline duration-200 hover:scale-103 sm:w-[400px]'}
 					onmouseenter={playHoverItem}
 					onclick={() => {
 						playClickItem();
@@ -535,9 +501,14 @@
 	</div>
 
 	<!-- choose frame -->
-	<div bind:this={frameSelector} class="scroll-appear hidden h-screen flex-col items-center gap-4">
-		<h1 class="font-phantom text-4xl font-bold text-dark-red">choose a photo frame!</h1>
-		<div class="flex flex-row overflow-x-scroll p-8">
+	<div
+		bind:this={frameSelector}
+		class="scroll-appear hidden min-h-screen flex-col items-center gap-4 py-8 sm:h-screen sm:py-0"
+	>
+		<h1 class="text-center font-phantom text-3xl font-bold text-dark-red sm:text-4xl">
+			choose a photo frame!
+		</h1>
+		<div class="flex w-full flex-row overflow-x-scroll p-4 sm:p-8">
 			{#each frames as frame, i}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -580,9 +551,11 @@
 	<!-- "print" photostrip -->
 	<div
 		bind:this={printSection}
-		class="scroll-appear hidden h-screen flex-col items-center justify-center gap-4"
+		class="scroll-appear hidden min-h-screen flex-col items-center justify-center gap-4 py-8 sm:h-screen sm:py-0"
 	>
-		<h1 class="font-phantom text-4xl font-bold text-dark-red">print your photo strip</h1>
+		<h1 class="text-center font-phantom text-3xl font-bold text-dark-red sm:text-4xl">
+			print your photo strip
+		</h1>
 		<button
 			class="red-button bright-red-shadow"
 			onclick={async (e) => {
@@ -593,7 +566,7 @@
 				(e.currentTarget as HTMLButtonElement).classList.add('hidden');
 			}}>print!</button
 		>
-		<div class="flex flex-row items-center justify-center gap-32">
+		<div class="flex flex-col items-center justify-center gap-8 sm:flex-row sm:gap-32">
 			{#if printed}
 				{#if copied}
 					<div
