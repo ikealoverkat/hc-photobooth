@@ -50,7 +50,8 @@
 		{ src: '/frame_hctg.png', name: 'hack club the frame', selected: false },
 		{ src: '/frame_intern.png', name: 'summer internship frame!', selected: false },
 		{ src: '/frame_ovg.png', name: 'overglade frame. senator im singaporean', selected: false },
-		{ src: '/frame_ysws.png', name: 'ysws frame! dont we all love free stuff?', selected: false }
+		{ src: '/frame_ysws.png', name: 'ysws frame! dont we all love free stuff?', selected: false },
+		{ src: '/frame_polaris.png', name: 'horizons polaris frame. two twos my word', selected: false },		
 	]);
 
 	let copied = $state(false);
@@ -161,7 +162,6 @@
 
 		context?.drawImage(video, 0, 0);
 		context.globalCompositeOperation = 'source-over';
-
 
 		if (currentFilter === 'cute') {
 			const cuteOverlay = new Image();

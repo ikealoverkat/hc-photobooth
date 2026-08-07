@@ -37,6 +37,11 @@
 			name: 'you ship photos, we ship photo strip',
 			description:
 				'hack club events are awesome, but a memory a lot of hack clubbers have is recieving their first item in the mail from hack club - whether it be free stickers, a YSWS prize, merch, or something else - and going: holy shit, this is real!! (cc swarit & his SOM a1 mini) i personally recieved my ipad from hack club after coding 90h and now i use it to make illustrations... for hack club. what goes around comes around...?'
+		},
+		{
+			src: 'frame_polaris.png',
+			name: 'horizons polaris! two twos my frame crodie fam',
+			description: "a frame for horizons polaris, the horizons event in toronto. i'm going to be there in about 9 hours from when i'm currently writing this description. (4:56 am on aug 7 2026) i drew this frame quickly so i could qualify for the event (lol) and so i can use it to take pictures with my friends at the event. im so excited !!!!!!! maybe i'll draw another polaris frame after the event with more inside jokes and other stuff."
 		}
 	];
 
