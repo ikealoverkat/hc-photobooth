@@ -136,26 +136,45 @@
 
 	async function takePhoto() {
 		const context = canvas.getContext('2d');
-
+		if (!context) return;
 		canvas.width = video.videoWidth;
 		canvas.height = video.videoHeight;
 
 		context?.drawImage(video, 0, 0);
 
-		if (currentFilter === 'cute') {
-			const overlay = new Image();
-			overlay.src = '/overlay_cute.png';
-			await overlay.decode();
+		switch (currentFilter) {
+			case 'none':
+				context.filter = 'none';
+				break;
 
-			context?.drawImage(overlay, 0, 0, canvas.width, canvas.height);
-		} else if (currentFilter === 'noise') {
-			const overlay = new Image();
-			overlay.src = '/overlay_noise.png';
-			await overlay.decode();
+			case 'B&W':
+				context.filter = 'grayscale(100%) contrast(1.2) brightness(1.5)';
+				break;
 
-			context?.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+			case 'cute':
+				context.filter = 'brightness(1.25) saturate(0.85) hue-rotate(-25deg)';
+				const cuteOverlay = new Image();
+				cuteOverlay.src = '/overlay_cute.png';
+				await cuteOverlay.decode();
+				context.globalCompositeOperation = 'screen';
+				context?.drawImage(cuteOverlay, 0, 0, canvas.width, canvas.height);
+				break;
+
+			case 'noise':
+				context.filter = 'contrast(1.2) hue-rotate(-15deg)';
+				const noiseOverlay = new Image();
+				noiseOverlay.src = '/overlay_noise.png';
+				await noiseOverlay.decode();
+				context.globalCompositeOperation = 'screen';
+				context?.drawImage(noiseOverlay, 0, 0, canvas.width, canvas.height);
+				break;
 		}
 
+		if (currentFilter === 'cute') {
+		} else if (currentFilter === 'noise') {
+		}
+
+		context.globalCompositeOperation = 'source-over';
 		photos = [...photos, { src: canvas.toDataURL('image/png'), selected: false }];
 	}
 
