@@ -203,6 +203,16 @@
 
 		console.log('copied to clipboard!');
 	}
+
+	function exportToGallery() {
+		if (!printCanvas) return;
+
+		const image = printCanvas.toDataURL('image/png');
+		const gallery = JSON.parse(localStorage.getItem('gallery') ?? '[]');
+		gallery.push(image);
+
+		localStorage.setItem("gallery", JSON.stringify(gallery));
+	}
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
@@ -213,11 +223,11 @@
 		<div
 			class="flex w-full max-w-sm flex-col items-center gap-5 rounded-3xl bg-white p-8 text-center shadow-2xl outline outline-dark-red"
 		>
-
 			<h1 class="font-phantom text-2xl font-bold text-red">looks like you're on a phone!</h1>
 
 			<p class="font-phantom text-base leading-relaxed text-dark-red">
-				this photobooth was designed for laptops and desktops. it might still run, but everything will look weird & perhaps misplaced.
+				this photobooth was designed for laptops and desktops. it might still run, but everything
+				will look weird & perhaps misplaced.
 			</p>
 
 			<div class="flex w-full flex-col gap-3 sm:flex-row">
@@ -398,6 +408,9 @@
 					>
 					<button class="red-button bright-red-shadow" onclick={copyPhotoStrip}
 						>copy to clipboard</button
+					>
+					<button class="red-button bright-red-shadow" onclick={exportToGallery}
+						>add to your gallery</button
 					>
 					<button
 						class="red-button bright-red-shadow font-bold"
