@@ -140,8 +140,6 @@
 		canvas.width = video.videoWidth;
 		canvas.height = video.videoHeight;
 
-		context?.drawImage(video, 0, 0);
-
 		switch (currentFilter) {
 			case 'none':
 				context.filter = 'none';
@@ -153,28 +151,32 @@
 
 			case 'cute':
 				context.filter = 'brightness(1.25) saturate(0.85) hue-rotate(-25deg)';
-				const cuteOverlay = new Image();
-				cuteOverlay.src = '/overlay_cute.png';
-				await cuteOverlay.decode();
-				context.globalCompositeOperation = 'screen';
-				context?.drawImage(cuteOverlay, 0, 0, canvas.width, canvas.height);
+
 				break;
 
 			case 'noise':
 				context.filter = 'contrast(1.2) hue-rotate(-15deg)';
-				const noiseOverlay = new Image();
-				noiseOverlay.src = '/overlay_noise.png';
-				await noiseOverlay.decode();
-				context.globalCompositeOperation = 'screen';
-				context?.drawImage(noiseOverlay, 0, 0, canvas.width, canvas.height);
 				break;
 		}
 
+		context?.drawImage(video, 0, 0);
+		context.globalCompositeOperation = 'source-over';
+
+
 		if (currentFilter === 'cute') {
+			const cuteOverlay = new Image();
+			cuteOverlay.src = '/overlay_cute.png';
+			await cuteOverlay.decode();
+			context.globalCompositeOperation = 'screen';
+			context?.drawImage(cuteOverlay, 0, 0, canvas.width, canvas.height);
 		} else if (currentFilter === 'noise') {
+			const noiseOverlay = new Image();
+			noiseOverlay.src = '/overlay_noise.png';
+			await noiseOverlay.decode();
+			context.globalCompositeOperation = 'screen';
+			context?.drawImage(noiseOverlay, 0, 0, canvas.width, canvas.height);
 		}
 
-		context.globalCompositeOperation = 'source-over';
 		photos = [...photos, { src: canvas.toDataURL('image/png'), selected: false }];
 	}
 
