@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { Copy, ArrowDownToLine, Trash2 } from 'lucide-svelte';
 	import Footer from '$lib/Footer.svelte';
 
 	let gallery: string[] = $state([]);
+
+    let copied = $state(false);
 
 	onMount(() => {
 		const saved = localStorage.getItem('gallery');
@@ -29,8 +31,11 @@
 					'image/png': blob
 				})
 			]);
-
 			console.log('image copied to clipboard');
+            copied = true;
+            setTimeout(() => {
+                copied = false
+            }, 2000)
 		} catch (error: any) {
 			console.error('failed to copy image: ', error.name, error.message);
 		}
@@ -54,7 +59,10 @@
 		<div class="flex flex-row flex-wrap gap-4">
 			{#each gallery as photo}
 				<div class="flex flex-col items-center justify-center gap-6">
-					<img src={photo} alt="saved photostrip" class="w-2/3 outline outline-dark-red" />
+                    {#if copied}
+                        <div class="absolute p-4 bg-dark-red/75 rounded-2xl text-lg -mt-4 text-white font-phantom popup-fadeout">copied to clipboard!</div>	
+                    {/if}
+                    <img src={photo} alt="saved photostrip" class="w-2/3 outline outline-dark-red" />
 					<div class="flex flex-row gap-4">
 						<button
 							class="countdown-button"

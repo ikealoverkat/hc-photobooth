@@ -50,6 +50,9 @@
 		{ src: '/frame_ysws.png', name: 'ysws frame! dont we all love free stuff?', selected: false }
 	]);
 
+	let copied = $state(false);
+	let galleried = $state(false);
+
 	onMount(async () => {
 		printCanvas = document.createElement('canvas');
 
@@ -201,7 +204,10 @@
 			})
 		]);
 
-		console.log('copied to clipboard!');
+		copied = true;
+		setTimeout(() => {
+			copied = false;
+		}, 2000);
 	}
 
 	function exportToGallery() {
@@ -211,7 +217,11 @@
 		const gallery = JSON.parse(localStorage.getItem('gallery') ?? '[]');
 		gallery.push(image);
 
-		localStorage.setItem("gallery", JSON.stringify(gallery));
+		localStorage.setItem('gallery', JSON.stringify(gallery));
+		galleried = true;
+		setTimeout(() => {
+			galleried = false;
+		}, 2000);		
 	}
 </script>
 
@@ -397,6 +407,20 @@
 		>
 		<div class="flex flex-row items-center justify-center gap-32">
 			{#if printed}
+				{#if copied}
+					<div
+						class="popup-fadeout absolute z-60 -mt-4 rounded-2xl bg-dark-red/75 p-4 font-phantom text-lg text-white"
+					>
+						copied to clipboard!
+					</div>
+				{/if}
+				{#if galleried}
+					<div
+						class="popup-fadeout absolute z-60 -mt-4 rounded-2xl bg-dark-red/75 p-4 font-phantom text-lg text-white"
+					>
+						added to your gallery
+					</div>
+				{/if}				
 				<div class="printer relative">
 					<hr class="absolute top-0 left-0 z-20 -mb-4 w-full border-2 border-dark-red/50" />
 					<canvas bind:this={printCanvas} class="hidden"></canvas>
