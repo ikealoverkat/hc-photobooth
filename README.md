@@ -1,11 +1,14 @@
 # hack club photobooth!!
 
+<img src="https://i.postimg.cc/qqHfVtfC/image.png" alt="" width="400">
+
 | table of contents |
 ---
 | [1. yap](#hack-club-photobooth) |
 | [2. how to run this project](#how-to-run-this-project) |
 | [3. how to add your own photo frames](#how-to-add-your-own-photo-frames) |
 | [4. ai disclosure](#ai-disclosure) |
+| [5. screenshots](#screenshots) | 
 
 ever since the hack club internship, i've been reflecting on how hack club has changed my life and brought me so many wonderful memories. what better way to treasure said memories than taking pictures?
 
@@ -119,6 +122,17 @@ let frames: Frame[] = $state([
 ## AI DISCLOSURE
 no ai was used for this project, except for the vscode copilot autocomplete 
 
+## screenshots
+
+ooooooooh project
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; margin: 2rem;">
+    <img src="https://i.postimg.cc/qqHfVtfC/image.png" alt="landing page" style="width: 200px">
+    <img src="https://i.postimg.cc/02HfbTjx/image.png" alt="printed photostrip" style="width: 200px">
+    <img src="https://i.postimg.cc/C1YC3YPj/image.png" alt="gallery page" style="width: 200px">
+    <img src="https://i.postimg.cc/90Qdfbjz/image.png" alt="frames page" style="width: 200px">
+    <img src="https://i.postimg.cc/CKpb8SVj/image.png" alt="frames page (hover)" style="width: 200px">                
+</div>
 
 ---
 
