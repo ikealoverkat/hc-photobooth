@@ -2,13 +2,15 @@
 
 <img src="https://i.postimg.cc/qqHfVtfC/image.png" alt="" width="400">
 
-| table of contents |
+## table of contents
 ---
-| [1. yap](#hack-club-photobooth) |
-| [2. how to run this project](#how-to-run-this-project) |
-| [3. how to add your own photo frames](#how-to-add-your-own-photo-frames) |
-| [4. ai disclosure](#ai-disclosure) |
-| [5. screenshots](#screenshots) | 
+| # | content |
+| --- | ---|
+|1. | [yap](#hack-club-photobooth) |
+| 2. |[how to run this project](#how-to-run-this-project) |
+|3. |[ how to add your own photo frames](#how-to-add-your-own-photo-frames) |
+|4. |[ ai disclosure](#ai-disclosure) |
+|5.  |[screenshots](#screenshots) | 
 
 ever since the hack club internship, i've been reflecting on how hack club has changed my life and brought me so many wonderful memories. what better way to treasure said memories than taking pictures?
 
