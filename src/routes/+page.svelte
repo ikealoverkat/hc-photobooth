@@ -31,6 +31,9 @@
 	let countdownTime: number = $state(3);
 	let countdownOptions = [0, 1, 3, 5];
 
+	let currentFilter: String = $state('none');
+	let filters = ['none', 'noise', 'B&W', 'cute'];
+
 	let flash = $state(false);
 
 	let selector: HTMLDivElement;
@@ -131,13 +134,27 @@
 		yay.play();
 	}
 
-	function takePhoto() {
+	async function takePhoto() {
 		const context = canvas.getContext('2d');
 
 		canvas.width = video.videoWidth;
 		canvas.height = video.videoHeight;
 
 		context?.drawImage(video, 0, 0);
+
+		if (currentFilter === 'cute') {
+			const overlay = new Image();
+			overlay.src = '/overlay_cute.png';
+			await overlay.decode();
+
+			context?.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+		} else if (currentFilter === 'noise') {
+			const overlay = new Image();
+			overlay.src = '/overlay_noise.png';
+			await overlay.decode();
+
+			context?.drawImage(overlay, 0, 0, canvas.width, canvas.height);
+		}
 
 		photos = [...photos, { src: canvas.toDataURL('image/png'), selected: false }];
 	}
@@ -150,6 +167,23 @@
 
 		photo.selected = !photo.selected;
 		photos = [...photos];
+	}
+
+	function changeFilter() {
+		switch (currentFilter) {
+			case 'none':
+				video.style.filter = 'none';
+				break;
+			case 'B&W':
+				video.style.filter = 'grayscale(100%) contrast(1.2) brightness(1.5)';
+				break;
+			case 'noise':
+				video.style.filter = 'contrast(1.2) hue-rotate(-15deg)';
+				break;
+			case 'cute':
+				video.style.filter = 'brightness(1.25) saturate(0.85) hue-rotate(-25deg)';
+				break;
+		}
 	}
 
 	async function cameraFlash() {
@@ -374,16 +408,49 @@
 				{#if countdown !== 0}
 					<div class="my-4 font-phantom text-6xl text-dark-red/75">{countdown}</div>
 				{/if}
-				<div>
+				<div class="relative w-fit">
 					<video
 						bind:this={video}
 						autoplay
 						playsinline
 						muted
-						class="max-w-200 scale-x-[-1] outline-2 outline-dark-red"
-					>
-					</video>
+						class="block w-125 scale-x-[-1] outline-2 outline-dark-red"
+					></video>
+
+					{#if currentFilter === 'cute'}
+						<img
+							src="/overlay_cute.png"
+							alt=""
+							class="pointer-events-none absolute inset-0 h-full w-full scale-x-[-1] object-fill mix-blend-screen"
+						/>
+					{/if}
+					{#if currentFilter === 'noise'}
+						<img
+							src="/overlay_noise.png"
+							alt=""
+							class="pointer-events-none absolute inset-0 h-full w-full scale-x-[-1] object-fill mix-blend-screen"
+						/>
+					{/if}
 				</div>
+			</div>
+
+			<div class="m-4 flex flex-row items-center gap-4">
+				<h2 class="font-phantom text-lg font-bold text-dark-red/50">FILTERS</h2>
+				{#each filters as filter}
+					<button
+						class={`countdown-button ${
+							currentFilter === filter ? 'countdown-button-selected' : 'countdown-button-hover'
+						}`}
+						onmouseenter={playHoverButton}
+						onclick={() => {
+							currentFilter = filter;
+							changeFilter();
+							playClickButton();
+						}}
+					>
+						{filter}
+					</button>
+				{/each}
 			</div>
 
 			<button
