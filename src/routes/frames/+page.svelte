@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Footer from '$lib/Footer.svelte';
+	import { onMount } from 'svelte';
 
 	type Frame = {
 		src: String;
@@ -38,11 +39,23 @@
 				'hack club events are awesome, but a memory a lot of hack clubbers have is recieving their first item in the mail from hack club - whether it be free stickers, a YSWS prize, merch, or something else - and going: holy shit, this is real!! (cc swarit & his SOM a1 mini) i personally recieved my ipad from hack club after coding 90h and now i use it to make illustrations... for hack club. what goes around comes around...?'
 		}
 	];
+
+	let hoverItem: HTMLAudioElement;
+
+	onMount(() => {
+		hoverItem = new Audio('/sounds/hover.wav');
+	});
+
+	function playHoverItem() {
+		if (!hoverItem) return;
+		hoverItem.currentTime = 0;
+		hoverItem.play();
+	}
 </script>
 
 <main class="dots-bg flex flex-col items-center justify-center gap-4 p-4">
 	<div
-		class="m-8 flex  w-10/16 flex-col items-center gap-4 rounded-2xl bg-white/75 p-16 outline-2 outline-dark-red/15"
+		class="m-8 flex w-10/16 flex-col items-center gap-4 rounded-2xl bg-white/75 p-16 outline-2 outline-dark-red/15"
 	>
 		<h1 class="text-4xl font-semibold text-red">frames frames frames</h1>
 		<!-- yap -->
@@ -57,8 +70,8 @@
 			</p>
 			<hr class="m-2 opacity-0" />
 			<p class="text-center text-xl text-dark-red">
-				i always want to add more frames! send me a dm with your favourite hack club memory, or
-				draw your own frame & make a
+				i always want to add more frames! send me a dm with your favourite hack club memory, or draw
+				your own frame & make a
 				<a
 					href="https://github.com/ikealoverkat/hc-photobooth"
 					class="text-red underline hover:decoration-wavy">pull request.</a
@@ -66,7 +79,7 @@
 			</p>
 		</div>
 		<!-- frames -->
-		<h1 class="mt-4 text-2xl text-dark-red italic">click on a frame to read more!</h1>
+		<h1 class="mt-4 text-2xl text-dark-red italic">hover on a frame to read more!</h1>
 		<div class="mt-4 -mr-12 flex flex-row justify-center">
 			{#each frames as frame, i}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -77,6 +90,7 @@
 							src={frame.src}
 							alt={frame.name}
 							class="relative w-35 outline transition-all duration-500 hover:z-20 hover:mx-6 hover:scale-103"
+							onmouseenter={playHoverItem}
 						/>
 						<h2
 							class="font-italic m-4 max-w-40 justify-self-center text-center font-phantom text-xl text-wrap text-dark-red opacity-0 duration-500 group-hover:opacity-100"
@@ -84,8 +98,10 @@
 							{frame.name}
 						</h2>
 					</div>
-					<div class="absolute z-50 mx-auto frame-popup-fadein inset-35 hidden max-w-1/2 bg-white/95 drop-shadow-md p-8 max-h-fit rounded-2xl outline outline-dark-red/45 group-hover:flex flex-col gap-2">
-						<h1 class="text-3xl text-red font-bold">{frame.name}</h1>
+					<div
+						class="frame-popup-fadein absolute inset-35 z-50 mx-auto hidden max-h-fit max-w-1/2 flex-col gap-2 rounded-2xl bg-white/95 p-8 outline outline-dark-red/45 drop-shadow-md group-hover:flex"
+					>
+						<h1 class="text-3xl font-bold text-red">{frame.name}</h1>
 						<p class="text-2xl text-dark-red">{@html frame.description}</p>
 					</div>
 				</div>

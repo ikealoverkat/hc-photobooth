@@ -550,8 +550,9 @@
 					>
 					<button
 						class="red-button bright-red-shadow font-bold"
-						onclick={() => {
+						onclick={async () => {
 							playYay();
+							await new Promise((r) => setTimeout(r, 2000));
 							location.reload();
 						}}>again!</button
 					>
