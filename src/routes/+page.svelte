@@ -232,7 +232,7 @@
 
 		const context = printCanvas.getContext('2d');
 		printCanvas.width = 200;
-		printCanvas.height = 750;
+		printCanvas.height = 667;
 
 		const drawImageFlipped = (img: any, x: number, y: number, width: number, height: number) => {
 			context?.save();
@@ -242,12 +242,12 @@
 			context?.restore();
 		};
 
-		if (images[0]) drawImageFlipped(images[0], 0, 50, 230, 140);
-		if (images[1]) drawImageFlipped(images[1], 0, 210, 230, 140);
-		if (images[2]) drawImageFlipped(images[2], 0, 370, 230, 140);
-		if (images[3]) drawImageFlipped(images[3], 0, 530, 230, 140);
+		if (images[0]) drawImageFlipped(images[0], 0, 46, 184, 133);
+		if (images[1]) drawImageFlipped(images[1], 0, 187, 184, 133);
+		if (images[2]) drawImageFlipped(images[2], 0, 330, 184, 133);
+		if (images[3]) drawImageFlipped(images[3], 0, 477, 184, 133);
 
-		context?.drawImage(frame, 0, 0, 200, 750);
+		context?.drawImage(frame, 0, 0, 200, 667);
 	}
 
 	function downloadPhotoStrip() {
