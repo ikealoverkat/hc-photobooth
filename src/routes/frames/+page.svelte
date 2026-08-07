@@ -57,7 +57,7 @@
 			</p>
 			<hr class="m-2 opacity-0" />
 			<p class="text-center text-xl text-dark-red">
-				i'll always want to add more frames! send me a dm with your favourite hack club memory, or
+				i always want to add more frames! send me a dm with your favourite hack club memory, or
 				draw your own frame & make a
 				<a
 					href="https://github.com/ikealoverkat/hc-photobooth"

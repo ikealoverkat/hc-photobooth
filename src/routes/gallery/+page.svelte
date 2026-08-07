@@ -56,7 +56,7 @@
 		{#if gallery.length == 0}
 			<h1 class="text-xl text-dark-red/50 italic">huh, looks like your gallery is empty. go <a href="/" class="text-red/65 font-bold underline hover:decoration-wavy">take some photos!</a></h1>
 		{/if}
-		<div class="flex flex-row flex-wrap gap-4">
+		<div class="flex flex-row flex-wrap gap-4 mb-8">
 			{#each gallery as photo}
 				<div class="flex flex-col items-center justify-center gap-6">
                     {#if copied}

@@ -171,10 +171,18 @@
 		printCanvas.width = 200;
 		printCanvas.height = 750;
 
-		context?.drawImage(images[0], 0, 50, 230, 140);
-		context?.drawImage(images[1], 0, 210, 230, 140);
-		context?.drawImage(images[2], 0, 370, 230, 140);
-		context?.drawImage(images[3], 0, 530, 230, 140);
+		const drawImageFlipped = (img: any, x: number, y: number, width: number, height: number) => {
+			context?.save();
+			context?.translate(x + width, y);
+			context?.scale(-1, 1);
+			context?.drawImage(img, 0, 0, width, height);
+			context?.restore();
+		};
+
+		if (images[0]) drawImageFlipped(images[0], 0, 50, 230, 140);
+		if (images[1]) drawImageFlipped(images[1], 0, 210, 230, 140);
+		if (images[2]) drawImageFlipped(images[2], 0, 370, 230, 140);
+		if (images[3]) drawImageFlipped(images[3], 0, 530, 230, 140);
 
 		context?.drawImage(frame, 0, 0, 200, 750);
 	}
@@ -221,7 +229,7 @@
 		galleried = true;
 		setTimeout(() => {
 			galleried = false;
-		}, 2000);		
+		}, 2000);
 	}
 </script>
 
@@ -420,7 +428,7 @@
 					>
 						added to your gallery
 					</div>
-				{/if}				
+				{/if}
 				<div class="printer relative">
 					<hr class="absolute top-0 left-0 z-20 -mb-4 w-full border-2 border-dark-red/50" />
 					<canvas bind:this={printCanvas} class="hidden"></canvas>
