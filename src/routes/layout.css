@@ -35,7 +35,11 @@
 	--color-red-transparent: #ec375088;
 }
 
-h1, h2, h3, a, p {
+h1,
+h2,
+h3,
+a,
+p {
 	font-family: var(--font-phantom);
 }
 
@@ -116,7 +120,18 @@ h1, h2, h3, a, p {
 }
 
 .printer canvas {
+	max-width: calc(100vw - 3rem);
+	height: auto;
+}
+
+.printer canvas {
 	animation: print 2s ease-out forwards;
+}
+
+@media (max-width: 640px) {
+	.printer {
+		height: min(750px, calc(100vh - 12rem));
+	}
 }
 
 @keyframes print {
@@ -174,7 +189,6 @@ h1, h2, h3, a, p {
 	}
 }
 
-
 .countdown-button {
 	font-family: var(--font-phantom);
 	font-size: 1.25rem;
@@ -199,7 +213,6 @@ h1, h2, h3, a, p {
 	padding: 0.35rem 1rem;
 	filter: drop-shadow(0px 4px 0px var(--color-dark-red));
 }
-
 
 .countdown-button-selected {
 	font-family: var(--font-phantom);
@@ -227,7 +240,7 @@ h1, h2, h3, a, p {
 }
 
 .popup-fadeout {
-	animation: fadeout 1s ease-out forwards
+	animation: fadeout 1s ease-out forwards;
 }
 
 @keyframes fadeout {
@@ -235,6 +248,6 @@ h1, h2, h3, a, p {
 		opacity: 1;
 	}
 	100% {
-		opacity: 0
+		opacity: 0;
 	}
 }
